@@ -179,6 +179,29 @@ ol li{margin:6px 0}
     <button class="chip" data-category="Desayunos">🍳 Desayunos</button>
   </div>
 
+  
+  <div class="scan-panel">
+    <label for="scanImage" class="btn secondary">
+      📷 Escanear ingredientes desde una foto
+    </label>
+    <input
+      id="scanImage"
+      type="file"
+      accept="image/*"
+      capture="environment"
+      hidden
+    >
+    <p class="muted" id="scanStatus">
+      Selecciona una fotografía de tus ingredientes.
+    </p>
+    <img
+      id="scanPreview"
+      alt="Vista previa de los ingredientes"
+      hidden
+      style="max-width:100%;max-height:220px;border-radius:12px;margin-top:10px"
+    >
+  </div>
+
   <div class="actions">
     <span id="status" aria-live="polite">Explora nuestras recetas.</span>
     <button class="btn primary" id="searchButton">Encontrar recetas</button>
