@@ -1,1 +1,107 @@
-<html><head><meta http-equiv="refresh" content="0; url=./índice.html"></head></html>
+<htm
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ScanChef te ayuda a aprovechar los ingredientes que tienes en casa y reducir el desperdicio de alimentos.">
+    <title>ScanChef | Cocina sin desperdicio</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f8ef;
+            color: #263b2a;
+            text-align: center;
+        }
+
+        main {
+            width: 100%;
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 32px 24px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #347447;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .icono {
+            font-size: 3.5rem;
+        }
+
+        .boton {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #347447;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .boton:hover {
+            background: #265a36;
+        }
+
+        #mensaje {
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            main {
+                margin: 24px auto;
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="icono" aria-hidden="true">🥕</div>
+
+        <h1>¡Hola! ScanChef está en línea</h1>
+
+        <p>
+            Tu asistente de cocina de aprovechamiento.
+            Descubre recetas con los ingredientes que ya tienes
+            en casa y ayuda a reducir el desperdicio de alimentos.
+        </p>
+
+        <button class="boton" id="iniciar">
+            ¡Comenzar!
+        </button>
+
+        <p id="mensaje" aria-live="polite"></p>
+    </main>
+
+    <script>
+        document.getElementById("iniciar").addEventListener("click", function () {
+            document.getElementById("mensaje").textContent =
+                "¡Vamos a cocinar! Próximamente podrás registrar tus ingredientes y descubrir tres recetas.";
+        });
+    </script>
+</body>
+</html>
