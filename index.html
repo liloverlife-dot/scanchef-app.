@@ -37,7 +37,8 @@ li{padding:4px 0;line-height:1.5}
 footer{text-align:center;padding:20px;color:#647467}
 @media(max-width:650px){
  header{align-items:flex-start;flex-direction:column}
- nav{width:100%}nav button{flex:1;padding:10px 6px}
+ nav{width:100%}
+ nav button{flex:1;padding:10px 6px}
  .row{flex-direction:column}
  .recipes{grid-template-columns:1fr}
  .hero,.panel,.card{padding:20px}
@@ -76,13 +77,13 @@ footer{text-align:center;padding:20px;color:#647467}
       <h1>Mis ingredientes 🧺</h1>
       <p class="muted">¿Qué alimentos tienes disponibles?</p>
       <form id="ingredientForm" class="row">
-        <input id="ingredient" placeholder="Ej. huevo, jitomate, arroz" maxlength="50" required>
+        <input id="ingredient" placeholder="Ej. pollo, res, papa, arroz" maxlength="50" required>
         <button type="submit">+ Agregar</button>
       </form>
       <div id="chips" class="chips"></div>
       <p id="message" aria-live="polite"></p>
-      <button class="secondary" onclick="clearIngredients()">Vaciar lista</button>
-      <button onclick="findRecipes()">Descubrir recetas →</button>
+      <button class="secondary" type="button" onclick="clearIngredients()">Vaciar lista</button>
+      <button type="button" onclick="findRecipes()">Encontrar recetas →</button>
     </div>
   </section>
 
@@ -110,98 +111,321 @@ const $ = id => document.getElementById(id);
 let ingredients = [];
 
 const recipes = [
- {name:"Omelette de verduras",emoji:"🍳",time:15,items:["huevo","queso","jitomate","tomate","cebolla","espinaca"],base:["huevo"],
-  desc:"Una opción rápida para desayuno o cena.",
-  steps:["Bate los huevos en un recipiente.","Corta las verduras que tengas disponibles.","Cocina las verduras en una sartén con un poco de aceite.","Agrega el huevo batido y cocina a fuego bajo.","Añade queso si tienes y sirve cuando el huevo esté completamente cocido."]},
- {name:"Arroz salteado con verduras",emoji:"🍚",time:20,items:["arroz","zanahoria","chícharo","chicharo","elote","huevo","cebolla","calabacita"],base:["arroz"],
-  desc:"Ideal para aprovechar arroz cocido y verduras.",
-  steps:["Corta las verduras en trozos pequeños.","Saltea las verduras con un poco de aceite.","Agrega arroz previamente cocido.","Mezcla durante unos minutos y sazona al gusto.","Si quieres, incorpora huevo bien cocido."]},
- {name:"Ensalada fresca",emoji:"🥗",time:10,items:["jitomate","tomate","pepino","lechuga","aguacate","limón","limon","zanahoria"],base:["jitomate","tomate","pepino","lechuga","aguacate","zanahoria"],
-  desc:"Una combinación fresca y fácil de adaptar.",
-  steps:["Lava bien las verduras.","Corta los ingredientes disponibles.","Mezcla en un recipiente.","Agrega limón y un poco de aceite si tienes.","Sazona al gusto y sirve fresca."]},
- {name:"Quesadillas con verduras",emoji:"🫓",time:15,items:["tortilla","tortillas","queso","espinaca","champiñones","champiñon","calabacita","frijoles"],base:["tortilla","tortillas"],
-  desc:"Una forma sencilla de aprovechar queso y verduras.",
-  steps:["Corta y cocina las verduras.","Calienta una tortilla en un comal.","Agrega queso y el relleno disponible.","Dobla la tortilla y calienta por ambos lados.","Sirve cuando el queso esté derretido."]},
- {name:"Sopa de verduras",emoji:"🍲",time:30,items:["zanahoria","papa","patata","calabacita","chayote","apio","jitomate","tomate","pasta","fideo"],base:["zanahoria","papa","patata","calabacita","chayote","pasta","fideo"],
-  desc:"Una sopa reconfortante para combinar verduras.",
-  steps:["Lava y corta las verduras.","Sofríe cebolla y ajo si tienes.","Agrega las verduras y agua suficiente.","Cocina hasta que los ingredientes estén suaves.","Sazona y sirve caliente."]},
- {name:"Pasta con jitomate",emoji:"🍝",time:20,items:["pasta","espagueti","jitomate","tomate","ajo","cebolla","queso","espinaca"],base:["pasta","espagueti"],
-  desc:"Una receta flexible para aprovechar jitomates maduros.",
-  steps:["Cuece la pasta siguiendo las instrucciones del paquete.","Pica jitomate, ajo y cebolla.","Cocina las verduras en una sartén con un poco de aceite.","Mezcla con la pasta cocida.","Agrega queso o espinaca si tienes."]},
- {name:"Papas doradas",emoji:"🥔",time:25,items:["papa","patata","cebolla","ajo","pimiento","queso"],base:["papa","patata"],
-  desc:"Una guarnición sencilla con ingredientes comunes.",
-  steps:["Lava y corta las papas en cubos.","Cuécelas hasta que comiencen a suavizarse.","Escurre y dóralas en una sartén con aceite.","Añade cebolla o ajo si tienes.","Sazona y sirve cuando estén bien cocidas."]},
- {name:"Tacos de frijoles",emoji:"🌮",time:12,items:["frijoles","tortilla","tortillas","queso","lechuga","jitomate","tomate","aguacate"],base:["frijoles"],
-  desc:"Aprovecha frijoles cocidos y acompáñalos con lo que tengas.",
-  steps:["Calienta los frijoles cocidos.","Calienta las tortillas.","Reparte los frijoles en las tortillas.","Agrega queso o verduras disponibles.","Sirve de inmediato."]},
- {name:"Hotcakes de plátano",emoji:"🥞",time:15,items:["plátano","banana","huevo","avena","harina","leche"],base:["plátano","banana"],
-  desc:"Una idea dulce para aprovechar plátanos maduros.",
-  steps:["Machaca un plátano maduro.","Mézclalo con huevo y avena o harina si tienes.","Calienta una sartén ligeramente engrasada.","Vierte pequeñas porciones y cocina a fuego medio-bajo.","Voltea y termina de cocinar."]}
+{
+ name:"Omelette de verduras",emoji:"🍳",time:15,
+ items:["huevo","queso","jitomate","tomate","cebolla","espinaca"],
+ base:["huevo"],
+ desc:"Una opción rápida para desayuno o cena.",
+ steps:[
+ "Bate los huevos en un recipiente.",
+ "Corta las verduras disponibles.",
+ "Cocina las verduras en una sartén con un poco de aceite.",
+ "Agrega el huevo batido y cocina hasta que esté completamente hecho.",
+ "Añade queso si tienes y sirve."
+ ]
+},
+{
+ name:"Arroz salteado con verduras",emoji:"🍚",time:20,
+ items:["arroz","zanahoria","chicharo","elote","huevo","cebolla","calabacita"],
+ base:["arroz"],
+ desc:"Ideal para aprovechar arroz cocido y verduras.",
+ steps:[
+ "Corta las verduras en trozos pequeños.",
+ "Saltea las verduras con un poco de aceite.",
+ "Agrega arroz previamente cocido.",
+ "Mezcla durante unos minutos y sazona al gusto.",
+ "Si quieres, incorpora huevo bien cocido."
+ ]
+},
+{
+ name:"Ensalada fresca",emoji:"🥗",time:10,
+ items:["jitomate","tomate","pepino","lechuga","aguacate","limon","zanahoria"],
+ base:["jitomate","pepino","lechuga","aguacate","zanahoria"],
+ desc:"Una combinación fresca y fácil de adaptar.",
+ steps:[
+ "Lava bien las verduras.",
+ "Corta los ingredientes disponibles.",
+ "Mezcla en un recipiente.",
+ "Agrega limón y un poco de aceite si tienes.",
+ "Sazona al gusto y sirve fresca."
+ ]
+},
+{
+ name:"Quesadillas con verduras",emoji:"🫓",time:15,
+ items:["tortilla","queso","espinaca","champinon","calabacita","frijoles"],
+ base:["tortilla"],
+ desc:"Una forma sencilla de aprovechar queso y verduras.",
+ steps:[
+ "Corta y cocina las verduras.",
+ "Calienta una tortilla en un comal.",
+ "Agrega queso y el relleno disponible.",
+ "Dobla la tortilla y calienta por ambos lados.",
+ "Sirve cuando el queso esté derretido."
+ ]
+},
+{
+ name:"Sopa de verduras",emoji:"🍲",time:30,
+ items:["zanahoria","papa","calabacita","chayote","apio","jitomate","pasta","fideo"],
+ base:["zanahoria","papa","calabacita","chayote","pasta","fideo"],
+ desc:"Una sopa reconfortante para combinar verduras.",
+ steps:[
+ "Lava y corta las verduras.",
+ "Sofríe cebolla y ajo si tienes.",
+ "Agrega las verduras y agua suficiente.",
+ "Cocina hasta que los ingredientes estén suaves.",
+ "Sazona y sirve caliente."
+ ]
+},
+{
+ name:"Pasta con jitomate",emoji:"🍝",time:20,
+ items:["pasta","jitomate","ajo","cebolla","queso","espinaca"],
+ base:["pasta"],
+ desc:"Una receta flexible para aprovechar jitomates maduros.",
+ steps:[
+ "Cuece la pasta siguiendo las instrucciones del paquete.",
+ "Pica jitomate, ajo y cebolla.",
+ "Cocina las verduras en una sartén con un poco de aceite.",
+ "Mezcla con la pasta cocida.",
+ "Agrega queso o espinaca si tienes."
+ ]
+},
+{
+ name:"Papas doradas",emoji:"🥔",time:25,
+ items:["papa","cebolla","ajo","pimiento","queso"],
+ base:["papa"],
+ desc:"Una guarnición sencilla con ingredientes comunes.",
+ steps:[
+ "Lava y corta las papas en cubos.",
+ "Cuécelas hasta que comiencen a suavizarse.",
+ "Escurre y dóralas en una sartén con aceite.",
+ "Añade cebolla o ajo si tienes.",
+ "Sazona y sirve cuando estén bien cocidas."
+ ]
+},
+{
+ name:"Tacos de frijoles",emoji:"🌮",time:12,
+ items:["frijoles","tortilla","queso","lechuga","jitomate","aguacate"],
+ base:["frijoles"],
+ desc:"Aprovecha frijoles cocidos y acompáñalos con lo que tengas.",
+ steps:[
+ "Calienta los frijoles cocidos.",
+ "Calienta las tortillas.",
+ "Reparte los frijoles en las tortillas.",
+ "Agrega queso o verduras disponibles.",
+ "Sirve de inmediato."
+ ]
+},
+{
+ name:"Hotcakes de plátano",emoji:"🥞",time:15,
+ items:["platano","huevo","avena","harina","leche"],
+ base:["platano"],
+ desc:"Una idea dulce para aprovechar plátanos maduros.",
+ steps:[
+ "Machaca un plátano maduro.",
+ "Mézclalo con huevo y avena o harina si tienes.",
+ "Calienta una sartén ligeramente engrasada.",
+ "Vierte pequeñas porciones y cocina a fuego medio-bajo.",
+ "Voltea y termina de cocinar."
+ ]
+},
+{
+ name:"Pollo con arroz",emoji:"🍗",time:30,
+ items:["pollo","arroz","cebolla","ajo","zanahoria","chicharo","elote","pimiento"],
+ base:["pollo"],
+ desc:"Una comida sencilla para combinar pollo con arroz y verduras.",
+ steps:[
+ "Corta el pollo en piezas pequeñas y evita contaminar otros alimentos con los utensilios usados para la carne cruda.",
+ "Cocina el pollo completamente en una sartén con un poco de aceite.",
+ "Agrega cebolla, ajo y las verduras que tengas.",
+ "Incorpora arroz previamente cocido y mezcla bien.",
+ "Verifica que el pollo esté completamente cocido antes de servir."
+ ]
+},
+{
+ name:"Tacos de pollo",emoji:"🌮",time:25,
+ items:["pollo","tortilla","cebolla","jitomate","lechuga","aguacate","limon","cilantro"],
+ base:["pollo"],
+ desc:"Una opción práctica para aprovechar pollo.",
+ steps:[
+ "Cocina el pollo por completo y deshébralo o córtalo en tiras.",
+ "Calienta las tortillas.",
+ "Coloca el pollo en las tortillas.",
+ "Agrega cebolla, jitomate, lechuga o aguacate si tienes.",
+ "Sirve con limón al gusto."
+ ]
+},
+{
+ name:"Sopa de pollo con verduras",emoji:"🍲",time:40,
+ items:["pollo","zanahoria","papa","calabacita","chayote","apio","cebolla","ajo","pasta","fideo"],
+ base:["pollo"],
+ desc:"Una sopa caliente para aprovechar pollo y verduras.",
+ steps:[
+ "Lava y corta las verduras.",
+ "Cocina el pollo en una olla con agua hasta que esté completamente cocido.",
+ "Agrega las verduras y los condimentos disponibles.",
+ "Añade pasta o fideo si tienes y cocina hasta que esté suave.",
+ "Comprueba que el pollo esté bien cocido antes de servir."
+ ]
+},
+{
+ name:"Picadillo de res",emoji:"🍲",time:30,
+ items:["res","papa","zanahoria","chicharo","jitomate","cebolla","ajo"],
+ base:["res"],
+ desc:"Carne molida con verduras; adapta la receta a lo que tengas.",
+ steps:[
+ "Cocina la carne molida de res hasta que esté completamente cocida.",
+ "Agrega cebolla, ajo y jitomate picado si tienes.",
+ "Incorpora papa y zanahoria cortadas en cubos.",
+ "Añade un poco de agua y cocina hasta que las verduras estén suaves.",
+ "Sazona al gusto y sirve caliente."
+ ]
+},
+{
+ name:"Tacos de res",emoji:"🌮",time:25,
+ items:["res","tortilla","cebolla","cilantro","jitomate","aguacate","limon"],
+ base:["res"],
+ desc:"Una opción práctica para aprovechar carne de res.",
+ steps:[
+ "Corta la carne de res en tiras pequeñas.",
+ "Cocínala completamente en una sartén.",
+ "Calienta las tortillas.",
+ "Reparte la carne en las tortillas y agrega verduras si tienes.",
+ "Sirve con limón al gusto."
+ ]
+},
+{
+ name:"Res con verduras",emoji:"🥘",time:35,
+ items:["res","papa","zanahoria","calabacita","chayote","cebolla","ajo","jitomate"],
+ base:["res"],
+ desc:"Combina carne de res con las verduras que tengas disponibles.",
+ steps:[
+ "Corta la carne y las verduras en trozos pequeños.",
+ "Dora la carne en una olla o sartén.",
+ "Agrega cebolla, ajo y jitomate si tienes.",
+ "Añade las verduras y un poco de agua; cocina hasta que todo esté bien cocido.",
+ "Sazona al gusto y sirve caliente."
+ ]
+}
 ];
 
-function norm(s){
- return s.toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+function norm(text){
+ const value=text.toLocaleLowerCase("es")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .replace(/\s+/g," ")
+  .trim();
+
+ const aliases={
+  "tomate":"jitomate",
+  "pechuga de pollo":"pollo",
+  "muslo de pollo":"pollo",
+  "pierna de pollo":"pollo",
+  "pollo deshebrado":"pollo",
+  "carne de res":"res",
+  "carne molida":"res",
+  "carne molida de res":"res",
+  "molida de res":"res",
+  "bistec":"res",
+  "bisteces":"res",
+  "bistec de res":"res",
+  "filete de res":"res",
+  "tortillas de maiz":"tortilla",
+  "tortillas":"tortilla",
+  "espagueti":"pasta",
+  "patata":"papa",
+  "chicharo":"chicharo",
+  "chicharos":"chicharo",
+  "champiñon":"champinon",
+  "champiñones":"champinon"
+ };
+ return aliases[value] || value;
 }
+
 function show(section){
- ["home","pantry","ideas","detail"].forEach(id=>$(id).hidden=id!==section);
+ ["home","pantry","ideas","detail"].forEach(id=>{
+  $(id).hidden=id!==section;
+ });
  window.scrollTo({top:0,behavior:"smooth"});
- if(section==="pantry") renderIngredients();
- if(section==="ideas") renderRecipes();
+ if(section==="pantry")renderIngredients();
+ if(section==="ideas")renderRecipes();
 }
+
 function addIngredient(value){
  value=value.trim().replace(/\s+/g," ");
  if(!value)return;
- if(ingredients.some(x=>norm(x)===norm(value))){
- $("message").textContent="Ese ingrediente ya está en tu lista.";
- return;
+
+ if(ingredients.some(item=>norm(item)===norm(value))){
+  $("message").textContent="Ese ingrediente ya está en tu lista.";
+  return;
  }
+
  ingredients.push(value);
  $("message").textContent="Ingrediente agregado.";
  renderIngredients();
 }
+
 function renderIngredients(){
  $("chips").innerHTML="";
  ingredients.forEach((item,index)=>{
   const chip=document.createElement("span");
   chip.className="chip";
+
   const label=document.createElement("span");
   label.textContent=item+" ";
+
   const remove=document.createElement("button");
   remove.type="button";
   remove.textContent="×";
   remove.setAttribute("aria-label","Eliminar "+item);
+
   remove.onclick=()=>{
    ingredients.splice(index,1);
    renderIngredients();
    $("message").textContent="Ingrediente eliminado.";
   };
+
   chip.append(label,remove);
   $("chips").appendChild(chip);
  });
 }
+
 function clearIngredients(){
  ingredients=[];
  renderIngredients();
  $("message").textContent="Lista vaciada.";
 }
+
 function examples(){
  ingredients=["huevo","jitomate","queso","arroz"];
  renderIngredients();
  $("message").textContent="Ejemplos cargados. Puedes modificarlos.";
  show("pantry");
 }
+
 $("ingredientForm").addEventListener("submit",event=>{
  event.preventDefault();
  addIngredient($("ingredient").value);
  $("ingredient").value="";
  $("ingredient").focus();
 });
+
 function matches(recipe){
  const mine=ingredients.map(norm);
- const found=recipe.items.map(norm).filter(item=>mine.some(x=>x===item||(x.length>4&&(x.includes(item)||item.includes(x)))));
+
+ const found=recipe.items
+  .map(norm)
+  .filter(item=>mine.includes(item));
+
+ const uniqueFound=[...new Set(found)];
+
  const base=recipe.base.some(item=>mine.includes(norm(item)));
- return {found:[...new Set(found)],eligible:base||new Set(found).size>=2};
+
+ return {
+  found:uniqueFound,
+  eligible:base||uniqueFound.length>=2
+ };
 }
+
 function findRecipes(){
  if(!ingredients.length){
   $("message").textContent="Primero agrega al menos un ingrediente.";
@@ -210,29 +434,60 @@ function findRecipes(){
  }
  show("ideas");
 }
+
 function renderRecipes(){
  const results=$("recipeResults");
+
  if(!ingredients.length){
   results.innerHTML='<div class="card"><h2>Primero agrega ingredientes</h2><p>Registra lo que tienes en casa para recibir sugerencias.</p><button onclick="show(\'pantry\')">Agregar ingredientes</button></div>';
   return;
  }
- const found=recipes.map((r,i)=>({r,i,m:matches(r)}))
-  .filter(x=>x.m.eligible)
-  .sort((a,b)=>b.m.found.length-a.m.found.length||a.r.time-b.r.time);
+
+ const found=recipes
+  .map((recipe,index)=>({recipe,index,match:matches(recipe)}))
+  .filter(item=>item.match.eligible)
+  .sort((a,b)=>
+   b.match.found.length-a.match.found.length||
+   a.recipe.time-b.recipe.time
+  );
+
  if(!found.length){
-  results.innerHTML='<div class="card"><h2>Aún no encontramos coincidencias claras</h2><p>Prueba con huevo, arroz, papa, frijoles, pasta o alguna verdura.</p><button onclick="show(\'pantry\')">Editar ingredientes</button></div>';
+  results.innerHTML='<div class="card"><h2>Aún no encontramos recetas</h2><p>Prueba con pollo, res, huevo, arroz, papa, frijoles, pasta o alguna verdura.</p><button onclick="show(\'pantry\')">Editar ingredientes</button></div>';
   return;
  }
+
  results.innerHTML="<p>Encontramos "+found.length+" sugerencia(s). Quizá necesites básicos como aceite, agua y sal.</p>"+
- found.map(({r,i,m})=>'<article class="recipe"><div class="emoji">'+r.emoji+'</div><h3>'+r.name+'</h3><p>'+r.desc+'</p><p class="muted">⏱ '+r.time+' minutos · Coincide con: '+m.found.join(", ")+'</p><button onclick="openRecipe('+i+')">Ver preparación</button></article>').join("");
+ found.map(({recipe,index,match})=>
+  '<article class="recipe">'+
+  '<div class="emoji">'+recipe.emoji+'</div>'+
+  '<h3>'+recipe.name+'</h3>'+
+  '<p>'+recipe.desc+'</p>'+
+  '<p class="muted">⏱ '+recipe.time+' minutos · Coincide con: '+match.found.join(", ")+'</p>'+
+  '<button onclick="openRecipe('+index+')">Ver preparación</button>'+
+  '</article>'
+ ).join("");
 }
+
 function openRecipe(index){
- const r=recipes[index];
- const m=matches(r);
- $("recipeDetail").innerHTML='<h1>'+r.emoji+' '+r.name+'</h1><p>'+r.desc+'</p><p><b>Tiempo estimado:</b> '+r.time+' minutos</p><h2>Ingredientes de tu lista</h2><p>'+(m.found.length?m.found.join(", "):"Revisa cuáles tienes disponibles")+'</p><p class="muted">Las cantidades dependen de las porciones. Puede que necesites agua, aceite, sal u otros básicos.</p><h2>Preparación</h2><ol>'+r.steps.map(step=>"<li>"+step+"</li>").join("")+'</ol><p class="muted">Revisa que los alimentos estén en buen estado y cocina completamente los ingredientes que lo requieran.</p>';
+ const recipe=recipes[index];
+ const match=matches(recipe);
+
+ $("recipeDetail").innerHTML=
+  '<h1>'+recipe.emoji+' '+recipe.name+'</h1>'+
+  '<p>'+recipe.desc+'</p>'+
+  '<p><b>Tiempo estimado:</b> '+recipe.time+' minutos</p>'+
+  '<h2>Ingredientes de tu lista</h2>'+
+  '<p>'+(match.found.length?match.found.join(", "):"Revisa cuáles tienes disponibles")+'</p>'+
+  '<p class="muted">Las cantidades dependen de las porciones. Puede que necesites agua, aceite, sal u otros básicos.</p>'+
+  '<h2>Preparación</h2>'+
+  '<ol>'+recipe.steps.map(step=>"<li>"+step+"</li>").join("")+'</ol>'+
+  '<p class="muted">Manipula la carne cruda por separado y cocina completamente pollo y res antes de consumirlos.</p>';
+
  show("detail");
 }
+
 renderIngredients();
 </script>
 </body>
 </html>
+
