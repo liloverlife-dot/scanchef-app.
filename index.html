@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,536 +6,366 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ScanChef | Recetas inteligentes</title>
 <style>
-:root {
-  --verde:#2e694b;
-  --oscuro:#214b36;
-  --fondo:#f7f8f3;
-  --texto:#29352d;
-  --suave:#e9f2e9;
-  --borde:#dfe7dd;
-}
+:root{--green:#287a54;--dark:#19583c;--mint:#eaf6ee;--cream:#fffdf8;--ink:#25352c;--muted:#66756b;--border:#dce8df}
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--fondo);color:var(--texto);
-  font-family:Arial,Helvetica,sans-serif;line-height:1.5
-}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.app{max-width:1120px;margin:auto;padding:16px}
-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{background:var(--verde);color:white;padding:10px 13px;border-radius:12px;font-size:23px}
-h1{font-size:23px;margin:0}
-.logo p{margin:0;color:#657166;font-size:12px}
-.pill{background:var(--suave);color:var(--verde);padding:7px 11px;border-radius:30px;font-size:12px}
-.hero{display:grid;grid-template-columns:1fr 1fr;background:#e6eee2;border-radius:20px;overflow:hidden;margin-bottom:24px}
-.hero-text{padding:clamp(22px,5vw,45px);align-self:center}
-.hero h2{font-size:clamp(27px,4vw,43px);line-height:1.12;margin:12px 0;letter-spacing:-1px}
-.hero p{color:#526257}
-.hero img{width:100%;height:100%;min-height:260px;object-fit:cover}
-.eyebrow{font-size:11px;font-weight:bold;letter-spacing:1.5px;color:var(--verde);text-transform:uppercase}
-.panel{background:white;border:1px solid var(--borde);border-radius:17px;padding:20px;margin-bottom:24px}
-h2.section-title{font-size:21px;margin:0 0 5px}
-.muted{color:#68756b;font-size:13px;margin-top:0}
-.fields{display:grid;grid-template-columns:1.5fr 1fr 1fr .65fr;gap:13px;margin-top:18px}
-.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
-.field input,.field select{width:100%;padding:11px;border:1px solid #d7e0d5;border-radius:10px;background:white;min-width:0}
-.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:17px}
-.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:bold}
-.primary{background:var(--verde);color:white}
-.secondary{background:var(--suave);color:var(--verde)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.chip{border:1px solid var(--borde);background:white;border-radius:25px;padding:8px 12px;font-size:13px}
-.chip.active{background:var(--verde);color:white}
-#status{font-size:12px;color:#657166}
-.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.card{background:white;border:1px solid var(--borde);border-radius:16px;overflow:hidden;min-width:0}
-.card img{width:100%;height:175px;object-fit:cover;display:block;background:#e5ebe2}
-.card-body{padding:15px}
-.tag{font-size:11px;background:var(--suave);color:var(--verde);border-radius:20px;padding:5px 9px;display:inline-block}
-.card h3{font-size:17px;margin:10px 0 5px}
-.card p{font-size:13px;color:#68756b;margin:0 0 12px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.stat{background:#f2f6ef;border-radius:9px;text-align:center;padding:8px 3px}
-.stat b{display:block;color:var(--verde);font-size:14px}
-.stat small{font-size:10px;color:#68756b}
-.card .btn{width:100%;margin-top:13px;font-size:13px}
-.empty{background:white;border:1px dashed #c7d5c6;padding:25px;border-radius:16px;text-align:center;grid-column:1/-1}
-.empty p{font-size:13px;color:#68756b}
-.note{background:#f8f6ed;border:1px solid #eae5d5;padding:12px;border-radius:10px;font-size:12px;color:#625f50;margin-top:15px}
-footer{text-align:center;color:#758076;font-size:12px;padding:25px 0}
-.backdrop{position:fixed;inset:0;background:#14251bcc;display:flex;align-items:center;justify-content:center;padding:15px;z-index:10}
-.hidden{display:none!important}
-.modal{background:white;width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:18px;padding:22px}
-.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:start}
-.modal-head h2{margin:4px 0}
-.close{border:0;background:#edf2eb;border-radius:50%;width:36px;height:36px;font-size:22px}
-.modal-photo{width:100%;height:220px;object-fit:cover;border-radius:12px;margin:12px 0}
-.servings{display:flex;align-items:center;gap:12px;margin:10px 0}
-.servings button{border:1px solid var(--borde);background:white;border-radius:8px;padding:5px 12px}
-.nutrition{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
-.nutrition div{background:var(--suave);padding:12px 7px;border-radius:10px;text-align:center}
-.nutrition small{display:block;font-size:11px}
-.nutrition b{color:var(--verde)}
-.ingredients{padding:0;list-style:none}
-.ingredients li{padding:10px 0;border-bottom:1px solid #edf0eb;font-size:13px}
-.ingredients li span{display:block;color:#68756b;font-size:12px}
-ol{padding-left:21px;font-size:14px}
-ol li{margin:6px 0}
-@media(max-width:800px){
- .fields{grid-template-columns:1fr 1fr}
- .results{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:520px){
- .app{padding:12px}
- .pill{font-size:10px}
- .hero{grid-template-columns:1fr}
- .hero img{height:190px;min-height:0;grid-row:1}
- .hero-text{padding:23px}
- .fields{grid-template-columns:1fr}
- .results{grid-template-columns:1fr}
- .card{display:grid;grid-template-columns:115px minmax(0,1fr)}
- .card img{height:100%;min-height:240px}
- .card-body{padding:12px}
- .card h3{font-size:15px}
- .stats{gap:3px}
- .stat b{font-size:12px}
- .stat small{font-size:9px}
- .actions{align-items:flex-start;flex-direction:column}
- .nutrition{grid-template-columns:1fr 1fr}
- .modal{padding:15px}
-}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+button,input,select,textarea{font:inherit}
+header{background:white;border-bottom:1px solid var(--border)}
+.nav,main{max-width:1100px;margin:auto;padding:16px 20px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-weight:800;font-size:23px;color:var(--green)}
+.logo span{color:#e9a34a}
+.small{color:var(--muted);font-size:13px}
+.hero{background:var(--mint);border-radius:20px;padding:30px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.eyebrow{font-size:12px;font-weight:bold;letter-spacing:1px;color:var(--green)}
+h1{font-size:clamp(29px,4vw,44px);line-height:1.12;margin:10px 0}
+h2{font-size:22px;margin:0 0 8px}
+.hero p{max-width:560px;color:var(--muted)}
+.hero-art{font-size:58px;background:white;border-radius:18px;padding:20px}
+.panel{margin-top:22px;padding:24px;background:white;border:1px solid var(--border);border-radius:18px;box-shadow:0 5px 20px #244b3310}
+label{display:block;font-size:14px;font-weight:bold;margin-bottom:7px}
+textarea,input,select{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px;background:white;color:var(--ink)}
+textarea{min-height:95px;resize:vertical}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-top:16px}
+.chips,.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1px solid var(--border);background:var(--mint);color:var(--dark);border-radius:30px;padding:7px 12px;cursor:pointer}
+.btn{border:0;border-radius:10px;padding:12px 17px;font-weight:bold;cursor:pointer}
+.primary{background:var(--green);color:white}
+.secondary{background:var(--mint);color:var(--dark)}
+button:hover{filter:brightness(.96)}
+.upload{margin-top:18px;padding:14px;border:1px dashed #a9c9b3;border-radius:12px}
+#photoPreview{display:none;max-width:200px;max-height:160px;margin-top:10px;border-radius:10px}
+#status{min-height:24px;margin-top:12px;color:var(--dark);font-size:14px}
+.results-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.card{border:1px solid var(--border);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;background:white}
+.picture{background:var(--mint);font-size:54px;text-align:center;padding:18px}
+.cardbody{padding:16px;display:flex;flex-direction:column;flex:1}
+.card h3{margin:0 0 8px;font-size:18px}
+.card p{font-size:13px;color:var(--muted);margin:0 0 10px}
+.tag{display:inline-block;background:var(--mint);color:var(--dark);font-size:11px;font-weight:bold;padding:5px 9px;border-radius:20px;align-self:start;margin-bottom:9px}
+.nutrition{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0 15px}
+.nutrition div{background:#f5f8f4;padding:8px;border-radius:8px}
+.nutrition strong{display:block;font-size:15px}
+.nutrition span{font-size:11px;color:var(--muted)}
+.card .btn{width:100%;margin-top:auto}
+.empty{grid-column:1/-1;padding:25px;text-align:center;border:1px dashed var(--border);border-radius:12px;color:var(--muted)}
+.backdrop{position:fixed;inset:0;background:#17271dcc;display:none;align-items:center;justify-content:center;padding:16px;z-index:5}
+.backdrop.show{display:flex}
+.modal{background:white;border-radius:17px;padding:24px;width:100%;max-width:600px;max-height:85vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;gap:10px}
+.close{border:0;border-radius:50%;width:38px;height:38px;background:var(--mint);font-size:23px;cursor:pointer}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-art{display:none}.grid{grid-template-columns:1fr 1fr}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){.nav,main{padding:14px}.small{display:none}.hero{padding:22px}.panel{padding:17px 13px}.grid,.results{grid-template-columns:1fr}.btn{width:100%}}
 </style>
 </head>
 <body>
-<div class="app">
-
-<header>
-  <div class="logo">
-    <div class="logo-icon">♨</div>
-    <div>
-      <h1>ScanChef</h1>
-      <p>Aprovecha tus ingredientes</p>
-    </div>
-  </div>
-  <span class="pill">Cocina inteligente</span>
-</header>
-
+<header><div class="nav"><div class="logo">🥗 Scan<span>Chef</span></div><div class="small">Aprovecha tus ingredientes · Cocina con creatividad</div></div></header>
+<main>
 <section class="hero">
-  <div class="hero-text">
-    <span class="eyebrow">Menos desperdicio, más ideas</span>
-    <h2>Descubre qué puedes cocinar hoy.</h2>
-    <p>Encuentra recetas con lo que tienes en casa y consulta sus valores nutricionales estimados.</p>
-    <button class="btn primary" onclick="document.getElementById('ingredientsInput').focus()">Buscar recetas ↓</button>
-  </div>
-  <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=85" alt="Ensalada fresca con ingredientes naturales">
+<div><div class="eyebrow">TU COCINA, NUEVAS POSIBILIDADES</div><h1>¿Qué tienes en tu refrigerador?</h1><p>Escribe los ingredientes disponibles y encuentra recetas prácticas para aprovechar mejor tus alimentos.</p></div>
+<div class="hero-art">🥦 🥕 🍅</div>
 </section>
 
 <section class="panel">
-  <h2 class="section-title">¿Qué tienes en tu cocina?</h2>
-  <p class="muted">Escribe los ingredientes separados por comas.</p>
-
-  <div class="fields">
-    <div class="field">
-      <label for="ingredientsInput">Mis ingredientes</label>
-      <input id="ingredientsInput" placeholder="Ej. pollo, arroz, tomate">
-    </div>
-    <div class="field">
-      <label for="category">Tipo de receta</label>
-      <select id="category">
-        <option value="Todas">Todas las recetas</option>
-        <option value="Ensaladas">Ensaladas</option>
-        <option value="Comidas">Comidas completas</option>
-        <option value="Desayunos">Desayunos</option>
-        <option value="Cenas">Cenas</option>
-        <option value="Vegetarianas">Vegetarianas</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="priority">Priorizar</label>
-      <select id="priority">
-        <option value="equilibrado">Equilibrio nutricional</option>
-        <option value="proteina">Proteínas</option>
-        <option value="carbohidrato">Carbohidratos</option>
-        <option value="grasa">Grasas</option>
-        <option value="calorias">Menos calorías</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="servings">Porciones</label>
-      <select id="servings">
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="chips">
-    <button class="chip active" data-category="Todas">Todas</button>
-    <button class="chip" data-category="Ensaladas">🥗 Ensaladas</button>
-    <button class="chip" data-category="Vegetarianas">🌱 Vegetarianas</button>
-    <button class="chip" data-category="Comidas">🍲 Comidas</button>
-    <button class="chip" data-category="Desayunos">🍳 Desayunos</button>
-  </div>
-
-  
-  <div class="scan-panel">
-    <label for="scanImage" class="btn secondary">
-      📷 Escanear ingredientes desde una foto
-    </label>
-    <input
-      id="scanImage"
-      type="file"
-      accept="image/*"
-      capture="environment"
-      hidden
-    >
-    <p class="muted" id="scanStatus">
-      Selecciona una fotografía de tus ingredientes.
-    </p>
-    <img
-      id="scanPreview"
-      alt="Vista previa de los ingredientes"
-      hidden
-      style="max-width:100%;max-height:220px;border-radius:12px;margin-top:10px"
-    >
-  </div>
-
-  <div class="actions">
-    <span id="status" aria-live="polite">Explora nuestras recetas.</span>
-    <button class="btn primary" id="searchButton">Encontrar recetas</button>
-  </div>
-</section>
-
-<section>
-  <h2 class="section-title" id="resultsTitle">Recetas para inspirarte</h2>
-  <p class="muted" id="resultsDescription">Elige ingredientes para encontrar coincidencias.</p>
-  <div class="results" id="results"></div>
-</section>
-
-<footer>
-  ScanChef · Los valores nutricionales son aproximados y dependen de los ingredientes y su preparación.
-</footer>
+<h2>Encuentra tu próxima receta</h2>
+<p class="small">Escribe ingredientes separados por comas. Ejemplo: pollo, arroz, jitomate.</p>
+<label for="ingredients">Ingredientes disponibles</label>
+<textarea id="ingredients" placeholder="Ejemplo: pollo, arroz, cebolla, jitomate"></textarea>
+<div class="chips">
+<button class="chip" data-add="pollo">🍗 Pollo</button>
+<button class="chip" data-add="res">🥩 Res</button>
+<button class="chip" data-add="huevo">🥚 Huevo</button>
+<button class="chip" data-add="arroz">🍚 Arroz</button>
+<button class="chip" data-add="jitomate">🍅 Jitomate</button>
+<button class="chip" data-add="papa">🥔 Papa</button>
+<button class="chip" data-add="frijoles">🫘 Frijoles</button>
+<button class="chip" data-add="pasta">🍝 Pasta</button>
 </div>
+<div class="grid">
+<div><label for="category">Categoría</label><select id="category"><option value="todas">Todas</option><option value="desayuno">Desayuno</option><option value="comida">Comida o cena</option><option value="ensalada">Ensalada</option><option value="sopa">Sopa</option><option value="vegetariana">Vegetariana</option></select></div>
+<div><label for="priority">Ordenar por</label><select id="priority"><option value="match">Más coincidencias</option><option value="time">Menor tiempo</option><option value="protein">Más proteína</option><option value="calories">Menos calorías</option></select></div>
+<div><label for="servings">Porciones</label><select id="servings"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+</div>
+<div class="upload"><label for="photo">📷 Seleccionar foto (opcional)</label><p class="small">Esta versión muestra una vista previa de tu fotografía. La búsqueda se realiza con los ingredientes escritos.</p><input id="photo" type="file" accept="image/*"><img id="photoPreview" alt="Vista previa de la fotografía"></div>
+<div class="actions"><button class="btn primary" id="search">🔎 Encontrar recetas</button><button class="btn secondary" id="clear">Limpiar</button></div>
+<div id="status" role="status" aria-live="polite"></div>
+</section>
 
-<div class="backdrop hidden" id="backdrop" role="dialog" aria-modal="true">
-  <div class="modal">
-    <div class="modal-head">
-      <div>
-        <span class="eyebrow">Tu receta</span>
-        <h2 id="detailTitle"></h2>
-        <p class="muted" id="detailDescription"></p>
-      </div>
-      <button class="close" id="closeButton" aria-label="Cerrar">×</button>
-    </div>
-    <div id="detailContent"></div>
-  </div>
+<section class="panel">
+<div class="results-head"><div><h2 id="resultTitle">Recetas para inspirarte</h2><p class="small" id="resultDescription">Escribe ingredientes para comenzar.</p></div></div>
+<div class="results" id="results"></div>
+</section>
+</main>
+<footer>ScanChef · Información nutricional estimada por porción. Los valores reales varían según cantidades, marcas y preparación.</footer>
+
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true">
+<div class="modal"><div class="modalhead"><div><div class="eyebrow">RECETA PASO A PASO</div><h2 id="modalTitle"></h2></div><button class="close" id="close" aria-label="Cerrar">×</button></div><div id="modalBody"></div></div>
 </div>
 
 <script>
-/* Valores nutricionales aproximados por cada 100 g de alimento.
-   Para los huevos se utiliza el peso comestible sin cáscara. */
-const foods = {
-  pollo:     {name:"Pollo cocido",k:165,p:31,c:0,f:3.6},
-  res:       {name:"Res magra cocida",k:217,p:26,c:0,f:12},
-  atun:      {name:"Atún en agua escurrido",k:116,p:26,c:0,f:1},
-  pescado:   {name:"Pescado blanco cocido",k:120,p:26,c:0,f:2},
-  huevo:     {name:"Huevo",k:143,p:12.6,c:.7,f:9.5},
-  lechuga:   {name:"Lechuga",k:15,p:1.4,c:2.9,f:.2},
-  espinaca:  {name:"Espinaca",k:23,p:2.9,c:3.6,f:.4},
-  tomate:    {name:"Tomate",k:18,p:.9,c:3.9,f:.2},
-  pepino:    {name:"Pepino",k:15,p:.7,c:3.6,f:.1},
-  zanahoria: {name:"Zanahoria",k:41,p:.9,c:9.6,f:.2},
-  aguacate:  {name:"Aguacate",k:160,p:2,c:8.5,f:14.7},
-  maiz:      {name:"Maíz cocido",k:96,p:3.4,c:21,f:1.5},
-  frijoles:  {name:"Frijoles cocidos",k:127,p:8.7,c:22.8,f:.5},
-  lentejas:  {name:"Lentejas cocidas",k:116,p:9,c:20.1,f:.4},
-  garbanzos: {name:"Garbanzos cocidos",k:164,p:8.9,c:27.4,f:2.6},
-  arroz:     {name:"Arroz cocido",k:130,p:2.7,c:28.2,f:.3},
-  quinoa:    {name:"Quinoa cocida",k:120,p:4.4,c:21.3,f:1.9},
-  pasta:     {name:"Pasta cocida",k:157,p:5.8,c:30.9,f:.9},
-  papa:      {name:"Papa cocida",k:87,p:1.9,c:20.1,f:.1},
-  tortilla:  {name:"Tortilla de maíz",k:218,p:5.7,c:44.6,f:2.9},
-  avena:     {name:"Avena seca",k:389,p:16.9,c:66.3,f:6.9},
-  yogur:     {name:"Yogur natural",k:61,p:3.5,c:4.7,f:3.3},
-  queso:     {name:"Queso fresco",k:265,p:18,c:3,f:20},
-  manzana:   {name:"Manzana",k:52,p:.3,c:13.8,f:.2},
-  platano:   {name:"Plátano",k:89,p:1.1,c:22.8,f:.3},
-  fresas:    {name:"Fresas",k:32,p:.7,c:7.7,f:.3},
-  aceite:    {name:"Aceite de oliva",k:884,p:0,c:0,f:100},
-  limon:     {name:"Jugo de limón",k:22,p:.4,c:6.9,f:.2},
-  cebolla:   {name:"Cebolla",k:40,p:1.1,c:9.3,f:.1},
-  pimiento:  {name:"Pimiento",k:31,p:1,c:6,f:.3},
-  cilantro:  {name:"Cilantro",k:23,p:2.1,c:3.7,f:.5},
-  nueces:    {name:"Nueces",k:654,p:15.2,c:13.7,f:65.2}
-};
+"use strict";
 
-const aliases = {
-  pollo:["pollo","pechuga"],
-  res:["res","carne de res","bistec","ternera"],
-  atun:["atun","atún"],
-  pescado:["pescado","filete"],
-  huevo:["huevo","huevos"],
-  lechuga:["lechuga"],
-  espinaca:["espinaca","espinacas"],
-  tomate:["tomate","jitomate"],
-  pepino:["pepino"],
-  zanahoria:["zanahoria"],
-  aguacate:["aguacate","palta"],
-  maiz:["maiz","maíz","elote"],
-  frijoles:["frijol","frijoles","porotos"],
-  lentejas:["lenteja","lentejas"],
-  garbanzos:["garbanzo","garbanzos"],
-  arroz:["arroz"],
-  quinoa:["quinoa","quinua"],
-  pasta:["pasta","espagueti","macarrones"],
-  papa:["papa","patata"],
-  tortilla:["tortilla","tortillas"],
-  avena:["avena"],
-  yogur:["yogur","yogurt"],
-  queso:["queso"],
-  manzana:["manzana"],
-  platano:["platano","plátano","banana"],
-  fresas:["fresa","fresas"],
-  aceite:["aceite"],
-  limon:["limon","limón"],
-  cebolla:["cebolla"],
-  pimiento:["pimiento"],
-  cilantro:["cilantro"],
-  nueces:["nuez","nueces"]
-};
-
-const photos = {
-  ensalada:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
-  pollo:"https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
-  atun:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
-  pasta:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80",
-  huevo:"https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
-  fruta:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=800&q=80",
-  pescado:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
-  bowl:"https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=800&q=80"
-};
-
-/* Cantidades en gramos para la receta completa base. */
 const recipes = [
- {id:1,name:"Ensalada de pollo y aguacate",cat:"Ensaladas",photo:"pollo",
-  desc:"Pollo, verduras frescas y aguacate.",i:[["pollo",250],["lechuga",100],["tomate",120],["aguacate",70],["limon",15],["aceite",5]],
-  steps:["Lava las verduras y corta el tomate y el aguacate.","Corta el pollo cocido en tiras.","Mezcla los ingredientes y adereza con limón y aceite."]},
- {id:2,name:"Ensalada de atún y maíz",cat:"Ensaladas",photo:"atun",
-  desc:"Una ensalada fresca con ingredientes sencillos.",i:[["atun",160],["lechuga",90],["tomate",100],["pepino",100],["maiz",80],["limon",15]],
-  steps:["Escurre el atún.","Pica las verduras.","Mezcla con el maíz y agrega limón."]},
- {id:3,name:"Ensalada de lentejas",cat:"Ensaladas",veg:true,photo:"ensalada",
-  desc:"Legumbres y vegetales con limón.",i:[["lentejas",240],["tomate",100],["pepino",100],["cebolla",25],["cilantro",8],["limon",15],["aceite",5]],
-  steps:["Utiliza lentejas cocidas y escurridas.","Pica las verduras.","Mezcla todo y añade limón y aceite."]},
- {id:4,name:"Ensalada de garbanzos",cat:"Ensaladas",veg:true,photo:"ensalada",
-  desc:"Garbanzos, espinaca y tomate.",i:[["garbanzos",220],["espinaca",80],["tomate",100],["aguacate",50],["limon",15]],
-  steps:["Enjuaga los garbanzos cocidos.","Combina con espinaca y tomate.","Agrega aguacate y limón."]},
- {id:5,name:"Bowl de pollo con arroz",cat:"Comidas",photo:"bowl",
-  desc:"Pollo, arroz y vegetales.",i:[["pollo",240],["arroz",240],["zanahoria",80],["pimiento",80],["aceite",5]],
-  steps:["Cocina completamente el pollo.","Calienta el arroz cocido y prepara los vegetales.","Sirve todo en un tazón."]},
- {id:6,name:"Tacos de res con verduras",cat:"Cenas",photo:"pollo",
-  desc:"Carne de res con pimiento y tortillas.",i:[["res",220],["tortilla",120],["pimiento",100],["cebolla",50],["tomate",80]],
-  steps:["Cocina bien la carne en tiras.","Saltea la cebolla y el pimiento.","Sirve en tortillas con tomate."]},
- {id:7,name:"Pasta con pollo y tomate",cat:"Comidas",photo:"pasta",
-  desc:"Pasta con pollo y verduras.",i:[["pasta",250],["pollo",180],["tomate",180],["espinaca",50],["aceite",5]],
-  steps:["Cuece la pasta.","Cocina el pollo y agrega tomate picado.","Mezcla con la pasta y la espinaca."]},
- {id:8,name:"Tazón de frijoles y arroz",cat:"Comidas",veg:true,photo:"bowl",
-  desc:"Una opción vegetal con frijoles y pico de gallo.",i:[["frijoles",220],["arroz",180],["tomate",100],["cebolla",25],["cilantro",8],["aguacate",40]],
-  steps:["Calienta los frijoles y el arroz cocidos.","Pica tomate, cebolla y cilantro.","Sirve con aguacate."]},
- {id:9,name:"Omelette de espinaca y queso",cat:"Desayunos",photo:"huevo",
-  desc:"Huevos, espinaca y queso fresco.",i:[["huevo",150],["espinaca",60],["queso",25],["tomate",80],["aceite",3]],
-  steps:["Bate los huevos.","Saltea la espinaca con un poco de aceite.","Agrega huevo y queso; cocina completamente."]},
- {id:10,name:"Avena con plátano y fresas",cat:"Desayunos",veg:true,photo:"fruta",
-  desc:"Avena, fruta fresca y yogur natural.",i:[["avena",45],["yogur",150],["platano",70],["fresas",80],["nueces",8]],
-  steps:["Coloca la avena en un tazón.","Agrega yogur y fruta cortada.","Termina con nueces picadas."]},
- {id:11,name:"Pescado con papa y ensalada",cat:"Cenas",photo:"pescado",
-  desc:"Pescado cocido con papa y vegetales.",i:[["pescado",240],["papa",250],["lechuga",70],["tomate",100],["limon",15],["aceite",5]],
-  steps:["Cocina el pescado hasta que esté bien hecho.","Hierve la papa hasta que esté suave.","Sirve con lechuga, tomate y limón."]},
- {id:12,name:"Ensalada de quinoa",cat:"Ensaladas",veg:true,photo:"ensalada",
-  desc:"Quinoa con verduras y aguacate.",i:[["quinoa",180],["espinaca",60],["pepino",100],["tomate",100],["aguacate",50],["limon",15]],
-  steps:["Cocina la quinoa y deja enfriar.","Pica las verduras y el aguacate.","Mezcla y añade limón."]},
- {id:13,name:"Ensalada de huevo y papa",cat:"Ensaladas",photo:"huevo",
-  desc:"Huevo cocido, papa y aderezo de yogur.",i:[["huevo",100],["papa",180],["espinaca",50],["yogur",35],["limon",10]],
-  steps:["Cuece el huevo y la papa.","Corta ambos en trozos.","Mezcla con espinaca, yogur y limón."]},
- {id:14,name:"Ensalada de frutas con yogur",cat:"Ensaladas",veg:true,photo:"fruta",
-  desc:"Fruta fresca con yogur y nueces.",i:[["manzana",100],["platano",80],["fresas",100],["yogur",120],["nueces",8]],
-  steps:["Lava y corta las frutas.","Colócalas en un tazón con yogur.","Añade nueces picadas."]}
+{id:1,name:"Pollo con arroz y verduras",emoji:"🍗",category:"comida",time:30,ingredients:["pollo","arroz","zanahoria","cebolla"],extra:["aceite","sal","pimienta"],cal:390,protein:32,carbs:43,fat:9,steps:["Cocina el arroz en agua hasta que esté suave.","Corta el pollo y las verduras en trozos pequeños.","Cocina el pollo en una sartén con un poco de aceite.","Añade las verduras y cocina hasta que estén tiernas.","Sirve con el arroz y ajusta los condimentos."]},
+{id:2,name:"Huevos a la mexicana",emoji:"🍳",category:"desayuno",time:12,ingredients:["huevo","jitomate","cebolla"],extra:["aceite","sal","chile"],cal:220,protein:14,carbs:8,fat:15,steps:["Pica el jitomate y la cebolla.","Sofríe las verduras con un poco de aceite.","Agrega los huevos batidos.","Cocina revolviendo hasta que estén bien cocidos."]},
+{id:3,name:"Ensalada de pollo",emoji:"🥗",category:"ensalada",time:20,ingredients:["pollo","lechuga","jitomate","zanahoria"],extra:["limon","aceite","sal"],cal:285,protein:30,carbs:15,fat:10,steps:["Cocina el pollo completamente y córtalo en tiras.","Lava y corta las verduras.","Mezcla todos los ingredientes.","Aliña con limón y un poco de aceite."]},
+{id:4,name:"Carne con papas",emoji:"🥩",category:"comida",time:35,ingredients:["res","papa","jitomate","cebolla"],extra:["aceite","sal","ajo"],cal:420,protein:29,carbs:34,fat:18,steps:["Corta la carne y las papas en cubos.","Sella la carne en una sartén.","Agrega cebolla, jitomate y papa.","Añade un poco de agua, tapa y cocina hasta que todo esté suave."]},
+{id:5,name:"Sopa de verduras",emoji:"🥣",category:"sopa",time:30,ingredients:["zanahoria","papa","calabaza","cebolla"],extra:["agua","sal","ajo"],cal:145,protein:4,carbs:29,fat:3,steps:["Lava y corta las verduras.","Calienta agua en una olla.","Agrega las verduras y los condimentos.","Cocina a fuego medio hasta que estén suaves."]},
+{id:6,name:"Arroz con huevo",emoji:"🍚",category:"comida",time:15,ingredients:["arroz","huevo","cebolla"],extra:["aceite","sal"],cal:310,protein:12,carbs:42,fat:9,steps:["Prepara el arroz o utiliza arroz ya cocido.","Cocina el huevo en una sartén.","Añade la cebolla picada y el arroz.","Mezcla y calienta hasta que esté listo."]},
+{id:7,name:"Pasta con jitomate",emoji:"🍝",category:"vegetariana",time:20,ingredients:["pasta","jitomate","cebolla"],extra:["aceite","ajo","sal"],cal:330,protein:10,carbs:58,fat:7,steps:["Cuece la pasta siguiendo las instrucciones del paquete.","Pica jitomate, cebolla y ajo.","Cocina las verduras en una sartén hasta formar una salsa.","Mezcla con la pasta y sirve."]},
+{id:8,name:"Ensalada de frijoles",emoji:"🫘",category:"ensalada",time:10,ingredients:["frijoles","jitomate","cebolla","limon"],extra:["sal","cilantro"],cal:240,protein:13,carbs:39,fat:3,steps:["Escurre los frijoles cocidos.","Pica jitomate, cebolla y cilantro.","Mezcla todo y añade jugo de limón.","Sazona al gusto."]},
+{id:9,name:"Tortilla de papa",emoji:"🥔",category:"desayuno",time:25,ingredients:["papa","huevo","cebolla"],extra:["aceite","sal"],cal:300,protein:12,carbs:31,fat:14,steps:["Pela y corta la papa en láminas finas.","Cocina la papa y la cebolla hasta que se suavicen.","Mezcla con huevo batido.","Cocina a fuego bajo por ambos lados hasta que el huevo esté bien cocido."]},
+{id:10,name:"Pollo con verduras",emoji:"🍲",category:"comida",time:25,ingredients:["pollo","zanahoria","calabaza","cebolla"],extra:["aceite","sal","pimienta"],cal:300,protein:33,carbs:18,fat:10,steps:["Corta el pollo y las verduras.","Cocina el pollo completamente en una sartén.","Agrega las verduras y un poco de agua.","Tapa y cocina hasta que las verduras estén suaves."]},
+{id:11,name:"Sopa de pasta",emoji:"🍜",category:"sopa",time:20,ingredients:["pasta","jitomate","cebolla"],extra:["agua","aceite","sal"],cal:210,protein:6,carbs:39,fat:4,steps:["Licúa jitomate y cebolla con un poco de agua.","Dora ligeramente la pasta en una olla con poco aceite.","Agrega la mezcla y agua caliente.","Cocina hasta que la pasta esté suave."]},
+{id:12,name:"Frijoles con arroz",emoji:"🍛",category:"vegetariana",time:15,ingredients:["frijoles","arroz","jitomate"],extra:["cebolla","sal"],cal:350,protein:14,carbs:65,fat:3,steps:["Calienta los frijoles cocidos.","Prepara o calienta el arroz.","Si deseas, cocina jitomate y cebolla picados.","Sirve los frijoles junto con el arroz y las verduras."]},
+{id:13,name:"Omelette de verduras",emoji:"🍳",category:"desayuno",time:15,ingredients:["huevo","jitomate","calabaza","cebolla"],extra:["aceite","sal"],cal:240,protein:16,carbs:10,fat:15,steps:["Pica las verduras en trozos pequeños.","Saltéalas brevemente en una sartén.","Bate los huevos y viértelos sobre las verduras.","Cocina hasta que el huevo esté completamente cuajado."]},
+{id:14,name:"Res con arroz",emoji:"🍲",category:"comida",time:30,ingredients:["res","arroz","zanahoria","cebolla"],extra:["aceite","sal","ajo"],cal:410,protein:28,carbs:43,fat:13,steps:["Corta la carne y las verduras.","Cocina la carne hasta que esté bien cocida.","Agrega las verduras y un poco de agua.","Sirve con arroz cocido."]},
+{id:15,name:"Ensalada de huevo",emoji:"🥚",category:"ensalada",time:15,ingredients:["huevo","lechuga","jitomate"],extra:["limon","sal"],cal:220,protein:13,carbs:10,fat:14,steps:["Cuece los huevos hasta que estén firmes.","Lava y corta las verduras.","Pela y corta los huevos.","Mezcla todo y aliña con limón."]},
+{id:16,name:"Calabacitas con elote",emoji:"🌽",category:"vegetariana",time:20,ingredients:["calabaza","elote","jitomate","cebolla"],extra:["aceite","sal"],cal:180,protein:6,carbs:28,fat:6,steps:["Pica la calabaza, el jitomate y la cebolla.","Cocina la cebolla en una sartén.","Agrega calabaza y elote.","Añade jitomate y cocina hasta que todo esté tierno."]}
 ];
 
-function normalize(s){
- return s.toLocaleLowerCase("es").normalize("NFD")
-  .replace(/[\u0300-\u036f]/g,"").trim();
+const aliases = {
+"jitomate":["jitomate","tomate","tomate rojo"],
+"tomate":["jitomate","tomate","tomate rojo"],
+"pollo":["pollo","pechuga","muslo de pollo"],
+"res":["res","carne de res","bistec","carne"],
+"carne":["res","carne de res","bistec","carne"],
+"huevo":["huevo","huevos"],
+"papa":["papa","papas","patata","patatas"],
+"frijol":["frijoles","frijol","porotos"],
+"frijoles":["frijoles","frijol","porotos"],
+"zanahoria":["zanahoria","zanahorias"],
+"calabaza":["calabaza","calabacita","calabacitas","zucchini"],
+"elote":["elote","maiz","maíz"],
+"maiz":["elote","maiz","maíz"],
+"limon":["limon","limón"],
+"arroz":["arroz"],
+"pasta":["pasta","espagueti","espaguetis","macarrones"],
+"lechuga":["lechuga"],
+"cebolla":["cebolla"],
+"cilantro":["cilantro"],
+"ajo":["ajo"],
+"chile":["chile"],
+"aceite":["aceite"],
+"pepino":["pepino"],
+"queso":["queso"],
+"atun":["atun","atún"],
+"atún":["atun","atún"],
+"avena":["avena"],
+"platano":["platano","plátano","banana"],
+"plátano":["platano","plátano","banana"]
+};
+
+function normalize(text){
+ return text.toLocaleLowerCase("es-MX")
+  .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^\p{L}\p{N}\s]/gu," ").trim();
 }
 
-function findKeys(text){
- const parts=normalize(text).split(/[,;\n]+/).filter(Boolean);
- return Object.keys(aliases).filter(key =>
-  parts.some(part=>aliases[key].some(alias=>
-   normalize(part)===normalize(alias) ||
-   normalize(part).includes(normalize(alias))
-  ))
- );
+function canonical(item){
+ const word=normalize(item);
+ if(!word)return "";
+ for(const key of Object.keys(aliases)){
+  const keyNorm=normalize(key);
+  if(word===keyNorm || (keyNorm.length>3 && word.startsWith(keyNorm+" "))){
+   return normalize(aliases[key][0]);
+  }
+ }
+ return word.replace(/s$/,"");
 }
 
-function calculate(recipe, servings){
- const total={k:0,p:0,c:0,f:0};
- recipe.i.forEach(([key,grams])=>{
-  const food=foods[key];
-  ["k","p","c","f"].forEach(n=>total[n]+=food[n]*grams/100);
- });
- Object.keys(total).forEach(n=>total[n]/=servings);
- return total;
+function getUserIngredients(){
+ return document.getElementById("ingredients").value
+  .split(/[,;\n]+/)
+  .map(x=>canonical(x))
+  .filter(Boolean);
 }
 
-function fmt(n){return Math.round(n*10)/10}
+function matchesIngredient(user,ingredient){
+ const wanted=canonical(ingredient);
+ return user.some(item=>item===wanted || item.includes(wanted) || wanted.includes(item));
+}
 
-function currentResults(){
- const keys=findKeys(document.getElementById("ingredientsInput").value);
- const category=document.getElementById("category").value;
- const priority=document.getElementById("priority").value;
+function calculateNutrition(recipe,servings){
+ return {
+  calories:Math.round(recipe.cal*servings/2),
+  protein:Math.round(recipe.protein*servings/2),
+  carbs:Math.round(recipe.carbs*servings/2),
+  fat:Math.round(recipe.fat*servings/2)
+ };
+}
 
- let list=recipes.map(r=>({
-  ...r,
-  score:r.i.filter(([key])=>keys.includes(key)).length
- }));
-
- if(category==="Vegetarianas") list=list.filter(r=>r.veg);
- else if(category!=="Todas") list=list.filter(r=>r.cat===category);
-
- if(keys.length) list=list.filter(r=>r.score>0);
-
- list.sort((a,b)=>{
-  if(keys.length && b.score!==a.score) return b.score-a.score;
-  const A=calculate(a,1), B=calculate(b,1);
-  if(priority==="proteina") return B.p-A.p;
-  if(priority==="carbohidrato") return B.c-A.c;
-  if(priority==="grasa") return B.f-A.f;
-  if(priority==="calorias") return A.k-B.k;
-  return b.score-a.score;
- });
- return {list,keys};
+function safe(text){
+ return String(text).replace(/[&<>"']/g,ch=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[ch]));
 }
 
 function render(){
- const {list,keys}=currentResults();
+ const user=getUserIngredients();
+ const category=document.getElementById("category").value;
+ const priority=document.getElementById("priority").value;
  const servings=Number(document.getElementById("servings").value);
  const results=document.getElementById("results");
+ const status=document.getElementById("status");
 
- document.getElementById("status").textContent=keys.length
-  ? "Ingredientes reconocidos: "+keys.map(k=>foods[k].name.toLowerCase()).join(", ")
-  : "Explora el catálogo o escribe tus ingredientes.";
-
- document.getElementById("resultsTitle").textContent=
-  list.length ? list.length+" recetas disponibles" : "No encontramos coincidencias";
-
- document.getElementById("resultsDescription").textContent=keys.length
-  ? "Las recetas con más ingredientes coincidentes aparecen primero."
-  : "Escribe pollo, res, huevo, arroz, tomate, atún, papa u otros ingredientes.";
-
- if(!list.length){
-  results.innerHTML=`<div class="empty">
-   <h3>¡Busquemos otras opciones!</h3>
-   <p>No hay coincidencias con esta búsqueda. Prueba otra categoría o consulta todo el catálogo.</p>
-   <button class="btn primary" onclick="resetSearch()">Mostrar todas las recetas</button>
-  </div>`;
+ if(!user.length){
+  status.textContent="Escribe al menos un ingrediente para encontrar recetas.";
+  document.getElementById("resultTitle").textContent="Recetas para inspirarte";
+  document.getElementById("resultDescription").textContent="Agrega ingredientes para comenzar.";
+  results.innerHTML='<div class="empty">🥕 Escribe ingredientes como pollo, arroz, huevo o jitomate.</div>';
   return;
  }
 
- results.innerHTML=list.map(r=>{
-  const n=calculate(r,servings);
-  const image=photos[r.photo]||photos.ensalada;
+ let found=recipes.filter(recipe=>{
+  const categoryOK=category==="todas" ||
+   recipe.category===category ||
+   (category==="vegetariana" && recipe.category==="vegetariana");
+  return categoryOK && recipe.ingredients.some(ing=>matchesIngredient(user,ing));
+ }).map(recipe=>{
+  const hits=recipe.ingredients.filter(ing=>matchesIngredient(user,ing)).length;
+  return {...recipe,hits,missing:recipe.ingredients.filter(ing=>!matchesIngredient(user,ing))};
+ });
+
+ found.sort((a,b)=>{
+  if(priority==="time")return a.time-b.time;
+  if(priority==="protein")return b.protein-a.protein;
+  if(priority==="calories")return a.cal-b.cal;
+  return b.hits-a.hits || a.time-b.time;
+ });
+
+ document.getElementById("resultTitle").textContent=found.length?
+  "Recetas que puedes preparar":"No encontramos coincidencias";
+ document.getElementById("resultDescription").textContent=found.length?
+  `Encontramos ${found.length} receta(s). Los nutrientes se muestran por porción seleccionada.`:
+  "Prueba otros ingredientes o selecciona otra categoría.";
+
+ status.textContent=found.length?
+  `Se encontraron ${found.length} recetas con tus ingredientes.`:
+  "No hay coincidencias para esos ingredientes en esta categoría. Prueba con pollo, res, huevo, arroz, pasta, papa o verduras.";
+
+ if(!found.length){
+  results.innerHTML='<div class="empty">🍽️ No encontramos recetas con esa combinación. Intenta con otros ingredientes o elige “Todas”.</div>';
+  return;
+ }
+
+ results.innerHTML=found.map(recipe=>{
+  const n=calculateNutrition(recipe,servings);
+  const catLabel={
+   desayuno:"Desayuno",comida:"Comida o cena",ensalada:"Ensalada",
+   sopa:"Sopa",vegetariana:"Vegetariana"
+  }[recipe.category] || recipe.category;
   return `<article class="card">
-   <img src="${image}" alt="${r.name}" loading="lazy">
-   <div class="card-body">
-    <span class="tag">${r.cat}</span>
-    <h3>${r.name}</h3>
-    <p>${r.desc}</p>
-    <div class="stats">
-     <div class="stat"><b>${Math.round(n.k)}</b><small>kcal/porción</small></div>
-     <div class="stat"><b>${fmt(n.p)} g</b><small>proteínas</small></div>
-     <div class="stat"><b>${fmt(n.c)} g</b><small>carbohidratos</small></div>
+   <div class="picture" aria-hidden="true">${recipe.emoji}</div>
+   <div class="cardbody">
+    <span class="tag">${safe(catLabel)} · ${recipe.time} min</span>
+    <h3>${safe(recipe.name)}</h3>
+    <p>Coinciden ${recipe.hits} de ${recipe.ingredients.length} ingredientes principales.</p>
+    <div class="nutrition">
+     <div><strong>${n.calories}</strong><span>kcal aprox.</span></div>
+     <div><strong>${n.protein} g</strong><span>Proteína</span></div>
+     <div><strong>${n.carbs} g</strong><span>Carbohidratos</span></div>
+     <div><strong>${n.fat} g</strong><span>Grasas</span></div>
     </div>
-    <p style="margin-top:10px">${r.score ? "Coincide con "+r.score+" ingrediente(s)" : "Sugerencia del catálogo"}</p>
-    <button class="btn secondary" onclick="openRecipe(${r.id})">Ver receta y nutrientes</button>
+    <button class="btn secondary" data-recipe="${recipe.id}">Ver preparación</button>
    </div>
   </article>`;
  }).join("");
+
+ results.querySelectorAll("[data-recipe]").forEach(button=>{
+  button.addEventListener("click",()=>openRecipe(Number(button.dataset.recipe)));
+ });
 }
 
 function openRecipe(id){
- const recipe=recipes.find(r=>r.id===id);
+ const recipe=recipes.find(item=>item.id===id);
+ if(!recipe)return;
  const servings=Number(document.getElementById("servings").value);
- const n=calculate(recipe,servings);
-
- document.getElementById("detailTitle").textContent=recipe.name;
- document.getElementById("detailDescription").textContent=recipe.desc;
-
- const ingredientRows=recipe.i.map(([key,grams])=>{
-  const f=foods[key];
-  const amount=grams/servings;
-  return `<li><strong>${f.name}</strong> — ${grams} g en la receta base
-   <span>Por porción: ${fmt(amount)} g · ${fmt(f.k*amount/100)} kcal · ${fmt(f.p*amount/100)} g de proteína</span>
-   <span>Carbohidratos: ${fmt(f.c*amount/100)} g · Grasas: ${fmt(f.f*amount/100)} g</span>
-  </li>`;
- }).join("");
-
- document.getElementById("detailContent").innerHTML=`
-  <img class="modal-photo" src="${photos[recipe.photo]||photos.ensalada}" alt="${recipe.name}">
-  <div class="servings">Porciones seleccionadas: <strong>${servings}</strong></div>
-  <h3>Información nutricional por porción</h3>
-  <div class="nutrition">
-   <div><small>Calorías</small><b>${Math.round(n.k)} kcal</b></div>
-   <div><small>Proteínas</small><b>${fmt(n.p)} g</b></div>
-   <div><small>Carbohidratos</small><b>${fmt(n.c)} g</b></div>
-   <div><small>Grasas</small><b>${fmt(n.f)} g</b></div>
-  </div>
-  <h3>Detalle nutricional por ingrediente</h3>
-  <ul class="ingredients">${ingredientRows}</ul>
+ const n=calculateNutrition(recipe,servings);
+ const user=getUserIngredients();
+ const missing=recipe.ingredients.filter(ing=>!matchesIngredient(user,ing));
+ const missingText=missing.length?missing.join(", "):"Tienes todos los ingredientes principales de esta receta.";
+ document.getElementById("modalTitle").textContent=recipe.name;
+ document.getElementById("modalBody").innerHTML=`
+  <p><strong>Tiempo:</strong> ${recipe.time} minutos · <strong>Porciones:</strong> ${servings}</p>
+  <h3>Ingredientes principales</h3>
+  <ul>${recipe.ingredients.map(ing=>`<li>${safe(ing)}</li>`).join("")}</ul>
+  <p><strong>Por revisar o comprar:</strong> ${safe(missingText)}</p>
   <h3>Preparación</h3>
-  <ol>${recipe.steps.map(step=>`<li>${step}</li>`).join("")}</ol>
-  <div class="note">Valores aproximados calculados con promedios por cada 100 g. Las cantidades y los nutrientes pueden variar según la marca, el corte y la preparación. La fotografía es ilustrativa.</div>
- `;
- document.getElementById("backdrop").classList.remove("hidden");
+  <ol>${recipe.steps.map(step=>`<li>${safe(step)}</li>`).join("")}</ol>
+  <h3>Nutrición estimada para ${servings} porción(es)</h3>
+  <p>${n.calories} kcal · Proteína: ${n.protein} g · Carbohidratos: ${n.carbs} g · Grasas: ${n.fat} g</p>
+  <p class="small">Los valores son aproximados. No sustituyen una evaluación nutricional profesional.</p>`;
+ document.getElementById("backdrop").classList.add("show");
 }
 
-function resetSearch(){
- document.getElementById("ingredientsInput").value="";
- document.getElementById("category").value="Todas";
- document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.category==="Todas"));
- render();
-}
-
-document.getElementById("searchButton").addEventListener("click",render);
-["ingredientsInput","category","priority","servings"].forEach(id=>{
- document.getElementById(id).addEventListener(
-  id==="ingredientsInput"?"input":"change",render
- );
-});
-
-document.querySelectorAll(".chip").forEach(button=>{
+document.querySelectorAll("[data-add]").forEach(button=>{
  button.addEventListener("click",()=>{
-  document.getElementById("category").value=button.dataset.category;
-  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b===button));
-  render();
+  const input=document.getElementById("ingredients");
+  const value=button.dataset.add;
+  const current=input.value.split(/[,;\n]+/).map(x=>normalize(x)).filter(Boolean);
+  if(!current.some(x=>canonical(x)===canonical(value))){
+   input.value=input.value.trim()?input.value.trim().replace(/[,;\s]*$/,"")+", "+value:value;
+  }
+  input.focus();
  });
 });
 
-document.getElementById("closeButton").addEventListener("click",()=>{
- document.getElementById("backdrop").classList.add("hidden");
+document.getElementById("search").addEventListener("click",render);
+document.getElementById("category").addEventListener("change",()=>{
+ if(getUserIngredients().length)render();
+});
+document.getElementById("priority").addEventListener("change",()=>{
+ if(getUserIngredients().length)render();
+});
+document.getElementById("servings").addEventListener("change",()=>{
+ if(getUserIngredients().length)render();
 });
 
+document.getElementById("clear").addEventListener("click",()=>{
+ document.getElementById("ingredients").value="";
+ document.getElementById("category").value="todas";
+ document.getElementById("priority").value="match";
+ document.getElementById("servings").value="2";
+ document.getElementById("status").textContent="";
+ document.getElementById("resultTitle").textContent="Recetas para inspirarte";
+ document.getElementById("resultDescription").textContent="Escribe ingredientes para comenzar.";
+ document.getElementById("results").innerHTML='<div class="empty">🥕 Escribe ingredientes para comenzar.</div>';
+ document.getElementById("photo").value="";
+ document.getElementById("photoPreview").style.display="none";
+ document.getElementById("photoPreview").removeAttribute("src");
+});
+
+document.getElementById("photo").addEventListener("change",event=>{
+ const file=event.target.files && event.target.files[0];
+ const preview=document.getElementById("photoPreview");
+ if(!file){preview.style.display="none";return;}
+ if(!file.type.startsWith("image/")){
+  document.getElementById("status").textContent="Selecciona un archivo de imagen válido.";
+  event.target.value="";
+  return;
+ }
+ const reader=new FileReader();
+ reader.onload=()=>{
+  preview.src=reader.result;
+  preview.style.display="block";
+ };
+ reader.readAsDataURL(file);
+});
+
+document.getElementById("close").addEventListener("click",()=>{
+ document.getElementById("backdrop").classList.remove("show");
+});
 document.getElementById("backdrop").addEventListener("click",event=>{
- if(event.target.id==="backdrop") event.currentTarget.classList.add("hidden");
+ if(event.target.id==="backdrop")event.currentTarget.classList.remove("show");
 });
-
 document.addEventListener("keydown",event=>{
- if(event.key==="Escape") document.getElementById("backdrop").classList.add("hidden");
+ if(event.key==="Escape")document.getElementById("backdrop").classList.remove("show");
 });
 
-render();
+document.getElementById("results").innerHTML='<div class="empty">🥕 Prueba escribir pollo, arroz, huevo, res, pasta o verduras.</div>';
 </script>
 </body>
 </html>
-
